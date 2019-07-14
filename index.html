@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Three.js Tutorial</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col text-center" style="margin-top: 100px;">
+                <p style="font-size: 60px;">Three.js Tutorial</p>
+            </div>
+        </div>
+
+        <div class="row">
+                <div class="col text-center" style="margin-top: 100px;">
+                    <a href="https://threejs.org/build/three.js"style="font-size: 30px;"><i class="fas fa-angle-right"></i>Baixar a biblioteca<i class="fas fa-angle-left"></i></a>
+                </div>
+        </div>
+        
+        <div class="row">
+            <div class="col text-center" style="margin-top: 50px;">
+                <p style="font-size: 30px;">Criando a cena</p>
+                <p style="font-size: 20px;" style="text-align: initial">Criar arquivo Index.html <i id="htmlIcon" onclick="play(1)" class="fas fa-angle-down"></i></p>
+                <textarea id="htmlCode" class="initial" style="width: 100%; border-radius: 10px;">
+
+                        <!DOCTYPE html>
+                        <html>
+                            <head>
+                                <meta charset=utf-8>
+                                <title>Meu primeiro Three.js app</title>
+                                <style>
+                                    body { margin: 0; }
+                                    canvas { width: 100%; height: 100% }
+                                </style>
+                            </head>
+                            <body>
+                                <script src="three.js"></script>
+                                <!-- O arquivo index.js deve ser sempre adicionado depois do three.js -->
+                                <script src="index.js"></script>
+                            </body>
+                        </html>
+                </textarea>
+                <p style="font-size: 20px;" style="text-align: initial">E criar arquivo Index.js <i id="jsIcon" onclick="play(2)" class="fas fa-angle-down"></i></p>
+                <textarea  id="jsCode"  class="initial" style="width: 100%; border-radius: 10px;">
+
+                        var scene = new THREE.Scene();
+                        var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+
+                        var renderer = new THREE.WebGLRenderer();
+                        renderer.setSize( window.innerWidth, window.innerHeight );
+                        document.body.appendChild( renderer.domElement );
+
+                        var geometry = new THREE.BoxGeometry( 1, 1, 1 );
+                        var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+                        var cube = new THREE.Mesh( geometry, material );
+                        scene.add( cube );
+
+                        camera.position.z = 5;
+
+                        function animate() {
+                            requestAnimationFrame( animate );
+
+                            cube.rotation.x += 0.01;
+                            cube.rotation.y += 0.01;
+
+                            renderer.render( scene, camera );
+                        };
+
+                        animate();
+
+                </textarea>
+                <br>
+                <p style="font-size: 30px;">Resultado</p>
+                <div id="initialRender"></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col text-center" style="margin-top: 80px;">
+                <p style="font-size: 30px;">Adicionando luz e sombras</p>
+                <p style="font-size: 20px;" style="text-align: initial">Adicionar o Shadow Map no render <i id="renderShadowIcon" onclick="play(3)" class="fas fa-angle-down"></i></p>
+                <textarea  id="renderShadowCode"  class="initial" style="width: 100%; border-radius: 10px;">
+
+                    var renderer = new THREE.WebGLRenderer();
+                    renderer.setSize( window.innerWidth, window.innerHeight );
+
+                    //Essa parte!!
+                    renderer.shadowMap.enabled = true;
+                    renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
+
+
+                    document.body.appendChild( renderer.domElement );
+                </textarea>
+                <br>
+                <p style="font-size: 20px;" style="text-align: initial">Adicionar as luzes <i id="lightIcon" onclick="play(4)" class="fas fa-angle-down"></i></p>
+                <textarea  id="lightCode"  class="initial" style="width: 100%; border-radius: 10px;"> 
+
+                    var light = new THREE.PointLight( 0xffffff, 1, 100 );
+                    light.position.set( 0, 10, 0 );
+                    light.castShadow = true; 
+                    scene.add( light );
+
+                    var light = new THREE.HemisphereLight( 0xffffbb, 0x080820, 1 );
+                    scene.add( light );
+                </textarea>
+                <br>
+                <p style="font-size: 20px;" style="text-align: initial">Adicionar as sombras no cubo <i id="cubeIcon" onclick="play(5)" class="fas fa-angle-down"></i></p>
+                <textarea  id="cubeCode"  class="initial" style="width: 100%; border-radius: 10px;"> 
+
+                    var geometry = new THREE.BoxGeometry( 1, 1, 1 );
+                    var material = new THREE.MeshStandardMaterial( { color: 0x00ff00 } );
+                    var cube = new THREE.Mesh( geometry, material );
+
+                    //Essa parte!!
+                    cube.castShadow = true;
+                    cube.receiveShadow = false; 
+
+                    scene.add( cube );
+                </textarea>
+                <br>
+                <p style="font-size: 30px;">Resultado</p>
+                <div id="LightRender"></div>
+                <button onclick="activatePointLight()">Toggle Point Light</button>
+                <br>
+                Intensidade da Hemisphere Light:
+                <input id="hemisphereRange" type="range" max="1" min="0" step="0.1" value="1">
+                <br>
+                Intensidade da Point Light:
+                <input id="pointRange" type="range" max="1" min="0" step="0.1" value="1">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col text-center" style="margin-top: 50px;">
+                <p style="font-size: 30px;">Adicionando controle da camera</p>
+                <a href="https://github.com/mrdoob/three.js/blob/master/examples/js/controls/OrbitControls.jss"style="font-size: 30px;"><i class="fas fa-angle-right"></i>Baixar a biblioteca OrbitControls<i class="fas fa-angle-left"></i></a>
+                <p style="font-size: 20px;" style="text-align: initial">Adicionar a biblioteca no index.html</p>
+                <textarea style="width: 100%; height: 150px; border-radius: 10px;">
+                    <script src="three.js"></script>
+                    <!-- Depois de adicionar o three.js -->
+                    <script src="orbitControls.js"></script>
+                    <!-- e antes de adicionar o index.js -->
+                    <script src="index.js"></script>
+                </textarea>
+                <p style="font-size: 20px;" style="text-align: initial">Adicionar o controle ao codigo</p>
+                <textarea style="width: 100%; height: 150px; border-radius: 10px;">
+            
+                    ...
+
+                    renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
+                    document.body.appendChild( renderer.domElement );
+
+                    //Sempre depois de criar a camera e o renderer!!!!
+                    var controls = new THREE.OrbitControls( camera, renderer.domElement );
+                </textarea>
+                <p style="font-size: 20px;" style="text-align: initial">Adicionar no Animate</p>
+                <textarea style="width: 100%; height: 200px; border-radius: 10px;">
+                    function animate() {
+                        requestAnimationFrame( animate );
+
+                        //Depois do requestAnimationFrame e antes do renderer.render!!!
+                        controls.update();
+
+                        cube.rotation.x += 0.01;
+                        cube.rotation.y += 0.01;
+                    
+                        renderer.render( scene, camera );
+                    };
+                </textarea>
+                <br>
+                <p style="font-size: 30px;">Resultado</p>
+                <p style="font-size: 20px;">Clique em cima do cubo e arraste para girar a camera</p>
+                <div id="controlRender"></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col text-center" style="margin-top: 50px;">
+                <p style="font-size: 30px;">Adicionando um modelo 3D</p>
+                <button class="btn btn-primary" onclick="showMode(1)">OBJ/MTL loader</button>
+                <button class="btn btn-primary" onclick="showMode(2)">modelLoader.js</button>
+                <p id="loaderMode" style="font-size: 20px;">OBJ/MTL loader</p>
+                <div id="mode1">
+                    <a href="https://github.com/mrdoob/three.js/blob/master/examples/js/loaders/OBJLoader.js"style="font-size: 30px;"><i class="fas fa-angle-right"></i>Baixar a biblioteca OBJLoader<i class="fas fa-angle-left"></i></a>
+                    <a href="https://github.com/mrdoob/three.js/blob/master/examples/js/loaders/MTLLoader.js"style="font-size: 30px;"><i class="fas fa-angle-right"></i>Baixar a biblioteca MTLLoader<i class="fas fa-angle-left"></i></a>
+                    <p style="font-size: 20px;" style="text-align: initial">Adicionar as bibliotecas no index.html</p>
+                    <textarea style="width: 100%; height: 150px; border-radius: 10px;">
+                            <script src="three.js"></script>
+                            <!-- Depois de adicionar o three.js -->
+                            <script src="OBJLoader.js"></script>
+                            <script src="MTLLoader.js"></script>
+                            <!-- e antes de adicionar o index.js -->
+                            <script src="index.js"></script>
+                    </textarea>
+                    <p style="font-size: 20px;" style="text-align: initial">Adicionar o codigo ao index.js<i id="objIcon" onclick="play(6)" class="fas fa-angle-down"></i></p>
+                    <textarea id="objCode" class="initial" style="width: 100%; border-radius: 10px;">
+                        var mtlLoader = new THREE.MTLLoader();
+                        //Alterar o caminho para ser na mesma pasta
+                        mtlLoader.setPath( 'obj/male02/' );
+                        //nome do arquivo MTL
+                        var url = "male02_dds.mtl";
+                        mtlLoader.load( url, function( materials ) {
+                        
+                            materials.preload();
+                        
+                            var objLoader = new THREE.OBJLoader();
+                            objLoader.setMaterials( materials );
+                            //Alterar o caminho para ser na mesma pasta
+                            objLoader.setPath( 'obj/male02/' );
+                            //nome do arquivo OBJ
+                            objLoader.load( 'male02.obj', function ( object ) {
+                        
+                                object.position.y = - 95;
+                                scene.add( object );
+                        
+                            }, onProgress, onError );
+                        
+                        });
+                    </textarea>
+                    <br>
+                    <p style="font-size: 30px;">Resultado</p>
+                    <div id="modelRender1"></div>
+                </div>
+
+                <div id="mode2">
+                    <a href="https://github.com/mrdoob/three.js/blob/master/examples/js/loaders/OBJLoader.js"style="font-size: 25px;"><i class="fas fa-angle-right"></i>Baixar a biblioteca OBJLoader<i class="fas fa-angle-left"></i></a>
+                    <a href="https://github.com/mrdoob/three.js/blob/master/examples/js/loaders/MTLLoader.js"style="font-size: 25px;"><i class="fas fa-angle-right"></i>Baixar a biblioteca MTLLoader<i class="fas fa-angle-left"></i></a>
+                    <a href="https://github.com/Carnaux/ClientSideOBJ-MTLLoader/blob/master/dist/modelLoader.js"style="font-size: 25px;"><i class="fas fa-angle-right"></i>Baixar a biblioteca modelLoader<i class="fas fa-angle-left"></i></a>
+                    <p style="font-size: 20px;" style="text-align: initial">Adicionar as bibliotecas no index.html</p>
+                    <textarea style="width: 100%; height: 150px; border-radius: 10px;">
+                            <script src="three.js"></script>
+                            <!-- Depois de adicionar o three.js -->
+                            <script src="OBJLoader.js"></script>
+                            <script src="MTLLoader.js"></script>
+                            <script src="modelLoader.js"></script>
+                            <!-- e antes de adicionar o index.js -->
+                            <script src="index.js"></script>
+                    </textarea>
+                    <p style="font-size: 20px;" style="text-align: initial">Adicionar os inputs e o botão ao index.html</p>
+                    <textarea style="width: 100%; height: 150px; border-radius: 10px;">
+                            <input type="file" onchange="onChooseFile(event, 'model')"/>
+
+                            <input type="file" onchange="onChooseFile(event, 'material')"/>
+                        
+                            <button id="loadBT" onclick="loadOBJMTL()">Carregar</button>
+                    </textarea>
+                    <p style="font-size: 20px;" style="text-align: initial">Inicializar a biblioteca</p>
+                    <textarea style="width: 100%; height: 80px; border-radius: 10px;">
+                            loader = new ModelLoader(sceneModel2);
+                    </textarea>
+                    <p style="font-size: 20px;" style="text-align: initial">Adicionar as seguintes funções</p>
+                    <textarea style="width: 100%; height: 150px; border-radius: 10px;">
+                            function onChooseFile(e, type){
+                                loader.fileChoosen(e, type);
+                            }
+                            
+                            function loadOBJMTL(){
+                                loader.load();
+                            }
+                    </textarea>
+                    <br>
+                    <p style="font-size: 30px;">Resultado</p>
+                    <div id="modelRender2"></div>
+                    Carregar modelo:
+                    <input type="file" onchange="onChooseFile(event, 'model')"/>
+                    <br>
+                    Carregar material:
+                    <input type="file" onchange="onChooseFile(event, 'material')"/>
+                    <br>
+                    <button id="loadBT" onclick="loadOBJMTL()">Carregar</button>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="three.js"></script>
+    <script src="Orbit.js"></script>
+    <script src="OBJLoader.js"></script>
+    <script src="MTLLoader.js"></script>
+    <script src="modelLoader.js"></script>
+    <script src="index.js"></script>
+</body>
+</html>

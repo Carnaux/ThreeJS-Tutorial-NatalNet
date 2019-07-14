@@ -1,0 +1,58 @@
+.fa-angle-down{
+    color: greenyellow;
+}
+.fa-angle-up{
+    color: red;
+}
+
+.initial{
+    height: 0;
+}
+  
+
+/* Standard syntax */
+@keyframes expand {
+    from {height: 0;}
+    to {height: 500px;}
+}
+@keyframes retract {
+    from {height: 500px;}
+    to {height: 0;}
+}
+@keyframes expandSM {
+    from {height: 0;}
+    to {height: 300px;}
+}
+@keyframes retractSM {
+    from {height: 300px;}
+    to {height: 0;}
+}
+
+
+.animate-forward {
+    animation-name: expand;
+    animation-duration: 3s;
+    animation-play-state: paused;
+    animation-fill-mode: forwards;
+}
+
+.animate-reverse {
+    animation-name: retract;
+    animation-duration: 3s;
+    animation-play-state: paused;
+    animation-fill-mode: forwards;
+}
+
+.animate-forward-sm {
+    animation-name: expandSM;
+    animation-duration: 3s;
+    animation-play-state: paused;
+    animation-fill-mode: forwards;
+}
+
+.animate-reverse-sm {
+    animation-name: retractSM;
+    animation-duration: 3s;
+    animation-play-state: paused;
+    animation-fill-mode: forwards;
+}

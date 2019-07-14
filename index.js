@@ -258,7 +258,7 @@ function initThreeModel(){
  
     var mtlLoader = new THREE.MTLLoader();
     //Alterar o caminho para ser na mesma pasta
-    
+    objLoader.setPath( '../' );
     //nome do arquivo MTL
     var url = "Finn.mtl";
     mtlLoader.load( url, function( materials ) {
@@ -268,7 +268,7 @@ function initThreeModel(){
         var objLoader = new THREE.OBJLoader();
         objLoader.setMaterials( materials );
         //Alterar o caminho para ser na mesma pasta
-        
+        objLoader.setPath( '../' );
         //nome do arquivo OBJ
         objLoader.load( 'finn.obj', function ( object ) {
     
